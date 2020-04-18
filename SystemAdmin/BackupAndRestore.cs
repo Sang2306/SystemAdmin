@@ -12,9 +12,11 @@ namespace SystemAdmin
 {
 	public partial class BackupAndRestore : Form
 	{
+		Image img = null;
 		public BackupAndRestore()
 		{
 			InitializeComponent();
+			img = timeRestoreParamenterOn.Image;
 		}
 
 		private void BackupAndRestore_FormClosed(object sender, FormClosedEventArgs e)
@@ -34,7 +36,7 @@ namespace SystemAdmin
 			Dispose();
 			Program.loginForm.Visible = true;
 		}
-		Image img = null;
+		
 		private void timeRestoreParamenterOn_Click(object sender, EventArgs e)
 		{
 			timeRestoreParamenterOff.Image = null;
@@ -44,10 +46,23 @@ namespace SystemAdmin
 
 		private void timeRestoreParamenterOff_Click(object sender, EventArgs e)
 		{
-			img = timeRestoreParamenterOn.Image;
 			timeRestoreParamenterOn.Image = null;
 			timeRestoreParamenterOff.Image = img;
 			groupBox.Visible = false;
+		}
+
+		private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+		{
+			try
+			{
+				string database_name = dataGridViewDatabases.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
+				//set toolStripTextBoxDatabaseName to the name of database
+				toolStripTextBoxDatabaseName.Text = database_name;
+			}
+			catch (ArgumentOutOfRangeException ioe)
+			{
+				
+			}
 		}
 	}
 }
