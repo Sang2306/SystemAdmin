@@ -21,5 +21,13 @@ namespace SystemAdmin
 		{
 			Close();
 		}
+
+		private void buttonOK_Click(object sender, EventArgs e)
+		{
+			BackupAndRestore form = new BackupAndRestore();
+			form.Activate();
+			form.Show();
+			Visible = false;
+		}
 	}
 }

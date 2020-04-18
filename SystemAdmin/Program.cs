@@ -9,14 +9,15 @@ namespace SystemAdmin
 	static class Program
 	{
 		/// <summary>
-		/// The main entry point for the application.
+		public static LoginForm loginForm;
 		/// </summary>
 		[STAThread]
 		static void Main()
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new LoginForm());
+			loginForm = new LoginForm();
+			Application.Run(loginForm);
 		}
 	}
 }

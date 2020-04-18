@@ -16,5 +16,10 @@ namespace SystemAdmin
 		{
 			InitializeComponent();
 		}
+
+		private void BackupAndRestore_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			Program.loginForm.Close();
+		}
 	}
 }

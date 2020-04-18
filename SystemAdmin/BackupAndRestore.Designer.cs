@@ -34,9 +34,11 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(645, 355);
+			this.ClientSize = new System.Drawing.Size(984, 561);
 			this.Name = "BackupAndRestore";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Sao lưu - phục hồi cơ sở dữ liệu trong SQL Server";
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.BackupAndRestore_FormClosed);
 			this.ResumeLayout(false);
 
 		}
