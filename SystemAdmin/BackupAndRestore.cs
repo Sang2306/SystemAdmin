@@ -59,10 +59,16 @@ namespace SystemAdmin
 				//set toolStripTextBoxDatabaseName to the name of database
 				toolStripTextBoxDatabaseName.Text = database_name;
 			}
-			catch (ArgumentOutOfRangeException ioe)
+			catch (ArgumentOutOfRangeException)
 			{
 				
 			}
+		}
+
+		private void createDeviceBtn_Click(object sender, EventArgs e)
+		{
+			AddDeviceForm form = new AddDeviceForm();
+			form.ShowDialog(this);
 		}
 	}
 }
