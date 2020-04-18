@@ -51,5 +51,26 @@ namespace SystemAdmin
 				return 0;
 			}
 		}
+
+		public static SqlDataReader ExecSqlDataReader(String strLenh)
+		{
+			SqlDataReader myreader;
+			SqlCommand sqlcmd = new SqlCommand(strLenh, Program.connect);
+			sqlcmd.CommandType = CommandType.Text;
+
+			if (Program.connect.State == ConnectionState.Closed) Program.connect.Open();
+
+			try
+			{
+				myreader = sqlcmd.ExecuteReader();
+				return myreader;
+			}
+			catch (SqlException ex)
+			{
+				Program.connect.Close();
+				MessageBox.Show(ex.Message);
+				return null;
+			}
+		}
 	}
 }
