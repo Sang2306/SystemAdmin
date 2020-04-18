@@ -14,7 +14,7 @@ namespace SystemAdmin
 		public static SqlConnection connect = new SqlConnection();
 		public static String connectString = "";
 		public static LoginForm loginForm;
-		public static string database="";
+		public static string database="tempdb";
 		public static string serverLogin;
 		public static string password;
 		public static string servername;
