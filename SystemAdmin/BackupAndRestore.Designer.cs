@@ -34,8 +34,8 @@
 			this.restoreBtn = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSplitButton = new System.Windows.Forms.ToolStripDropDownButton();
 			this.restoreTimeParameter = new System.Windows.Forms.ToolStripComboBox();
-			this.createDeviceBtn = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.createDeviceBtn = new System.Windows.Forms.ToolStripButton();
 			this.exitBtn = new System.Windows.Forms.ToolStripButton();
 			this.toolStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -89,6 +89,11 @@
 			this.restoreTimeParameter.Name = "restoreTimeParameter";
 			this.restoreTimeParameter.Size = new System.Drawing.Size(121, 23);
 			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 39);
+			// 
 			// createDeviceBtn
 			// 
 			this.createDeviceBtn.Image = ((System.Drawing.Image)(resources.GetObject("createDeviceBtn.Image")));
@@ -96,11 +101,6 @@
 			this.createDeviceBtn.Name = "createDeviceBtn";
 			this.createDeviceBtn.Size = new System.Drawing.Size(140, 36);
 			this.createDeviceBtn.Text = "Tạo device sao lưu";
-			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 39);
 			// 
 			// exitBtn
 			// 

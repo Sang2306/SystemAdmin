@@ -24,10 +24,22 @@ namespace SystemAdmin
 
 		private void buttonOK_Click(object sender, EventArgs e)
 		{
-			BackupAndRestore form = new BackupAndRestore();
-			form.Activate();
-			form.Show();
-			Visible = false;
+			Program.servername = textBoxServerName.Text;
+			Program.serverLogin = textBoxLoginName.Text;
+			Program.password = textBoxPassword.Text;
+			int is_ok = Program.KetNoi();
+			if (is_ok != 0)
+			{
+				BackupAndRestore form = new BackupAndRestore();
+				form.Activate();
+				form.Show();
+				Visible = false;
+			}
+			else
+			{
+				MessageBox.Show("Kiểm tra lại thông tin đăng nhập", "Đăng nhập thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+
 		}
 	}
 }
