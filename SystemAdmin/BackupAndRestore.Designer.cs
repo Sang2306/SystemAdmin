@@ -28,7 +28,6 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BackupAndRestore));
 			this.toolStrip = new System.Windows.Forms.ToolStrip();
 			this.backUpBtn = new System.Windows.Forms.ToolStripButton();
@@ -42,7 +41,7 @@
 			this.dataGridViewDatabases = new System.Windows.Forms.DataGridView();
 			this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.databaseidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.databasesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+			this.databasesBindingSource = new System.Windows.Forms.BindingSource();
 			this.dS = new SystemAdmin.DS();
 			this.databasesTableAdapter = new SystemAdmin.DSTableAdapters.databasesTableAdapter();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -54,7 +53,7 @@
 			this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.backupstartdateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.usernameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.sPSTTBACKUPBindingSource = new System.Windows.Forms.BindingSource(this.components);
+			this.sPSTTBACKUPBindingSource = new System.Windows.Forms.BindingSource();
 			this.sP_STT_BACKUPTableAdapter = new SystemAdmin.DSTableAdapters.SP_STT_BACKUPTableAdapter();
 			this.checkBoxWithInit = new System.Windows.Forms.CheckBox();
 			this.groupBox = new System.Windows.Forms.GroupBox();
@@ -97,6 +96,7 @@
 			this.backUpBtn.Name = "backUpBtn";
 			this.backUpBtn.Size = new System.Drawing.Size(82, 36);
 			this.backUpBtn.Text = "Sao lưu";
+			this.backUpBtn.Click += new System.EventHandler(this.backUpBtn_Click);
 			// 
 			// restoreBtn
 			// 
@@ -123,7 +123,7 @@
 			this.timeRestoreParamenterOn.Name = "timeRestoreParamenterOn";
 			this.timeRestoreParamenterOn.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.B)));
-			this.timeRestoreParamenterOn.Size = new System.Drawing.Size(180, 38);
+			this.timeRestoreParamenterOn.Size = new System.Drawing.Size(164, 22);
 			this.timeRestoreParamenterOn.Text = "Bật";
 			this.timeRestoreParamenterOn.Click += new System.EventHandler(this.timeRestoreParamenterOn_Click);
 			// 
@@ -132,7 +132,7 @@
 			this.timeRestoreParamenterOff.Name = "timeRestoreParamenterOff";
 			this.timeRestoreParamenterOff.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.T)));
-			this.timeRestoreParamenterOff.Size = new System.Drawing.Size(180, 38);
+			this.timeRestoreParamenterOff.Size = new System.Drawing.Size(164, 22);
 			this.timeRestoreParamenterOff.Text = "Tắt";
 			this.timeRestoreParamenterOff.Click += new System.EventHandler(this.timeRestoreParamenterOff_Click);
 			// 

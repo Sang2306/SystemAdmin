@@ -39,9 +39,11 @@ namespace SystemAdmin
 				//set toolStripTextBoxDatabaseName to the name of database
 				toolStripTextBoxDatabaseName.Text = database_name;
 				//kiểm tra xem back up device đã được tạo cho cơ sở dữ liệu đang chọn hay chưa
-				string logicalname = database_name + "_DEVICE";
+				string logicalname = database_name.Trim() + "_DEVICE";
 				checkIfDeviceExisted(logicalname);
-			}catch (Exception){}
+				sP_STT_BACKUPTableAdapter.Fill(dS.SP_STT_BACKUP, database_name);
+			}
+			catch (Exception){}
 
 		}
 
@@ -72,8 +74,10 @@ namespace SystemAdmin
 				//set toolStripTextBoxDatabaseName to the name of database
 				toolStripTextBoxDatabaseName.Text = database_name;
 				//kiểm tra xem back up device đã được tạo cho cơ sở dữ liệu đang chọn hay chưa
-				string logicalname = database_name + "_DEVICE";
+				string logicalname = database_name.Trim() + "_DEVICE";
 				checkIfDeviceExisted(logicalname);
+				//show các bản backup của database đã chọn
+				sP_STT_BACKUPTableAdapter.Fill(dS.SP_STT_BACKUP, database_name);
 			}
 			catch (ArgumentOutOfRangeException)
 			{
@@ -84,7 +88,7 @@ namespace SystemAdmin
 		private void createDeviceBtn_Click(object sender, EventArgs e)
 		{
 			//tạo device
-			string logicalname = database_name + "_DEVICE";
+			string logicalname = database_name.Trim() + "_DEVICE";
 			string physicalname = Program.backup_device_path + logicalname + ".bak";
 			string devtype = "disk";
 			SqlCommand sql_command = new SqlCommand("sp_addumpdevice", Program.connect);
@@ -97,6 +101,9 @@ namespace SystemAdmin
 				MessageBox.Show("Không thể tạo device", "Lỗi tạo device", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			createDeviceBtn.Enabled = false;
+			backUpBtn.Enabled = true;
+			restoreBtn.Enabled = true;
+			toolStripSplitButtonTimeRestore.Enabled = true;
 		}
 		private Boolean checkIfDeviceExisted(string logicalname)
 		{
@@ -105,17 +112,6 @@ namespace SystemAdmin
 			try
 			{
 				if (!reader.HasRows)
-				{
-					createDeviceBtn.Enabled = true;
-					backUpBtn.Enabled = false;
-					restoreBtn.Enabled = false;
-					toolStripSplitButtonTimeRestore.Enabled = false;
-					selected_logical_name = "";
-					return false;
-				}
-				reader.Read();
-				selected_logical_name = reader.GetString(0);
-				if (Convert.IsDBNull(selected_logical_name))
 				{
 					createDeviceBtn.Enabled = true;
 					backUpBtn.Enabled = false;
@@ -140,6 +136,20 @@ namespace SystemAdmin
 				reader.Close();
 				Program.connect.Close();
 			}
+		}
+
+		private void backUpBtn_Click(object sender, EventArgs e)
+		{
+			string command = "BACKUP DATABASE " + database_name + " TO " + database_name.Trim() + "_DEVICE";
+			if (checkBoxWithInit.Checked)
+			{
+				command += " WITH INIT;";
+			}else
+			{
+				command += ";";
+			}
+			Program.ExecSqlDataReader(command).Close();
+			sP_STT_BACKUPTableAdapter.Fill(dS.SP_STT_BACKUP, database_name);
 		}
 	}
 }
