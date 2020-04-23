@@ -44,7 +44,6 @@
 			this.databaseidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.databasesBindingSource = new System.Windows.Forms.BindingSource(this.components);
 			this.dS = new SystemAdmin.DS();
-			this.databasesTableAdapter = new SystemAdmin.DSTableAdapters.databasesTableAdapter();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripTextBoxDatabaseName = new System.Windows.Forms.ToolStripTextBox();
@@ -55,13 +54,14 @@
 			this.backupstartdateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.usernameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.sPSTTBACKUPBindingSource = new System.Windows.Forms.BindingSource(this.components);
-			this.sP_STT_BACKUPTableAdapter = new SystemAdmin.DSTableAdapters.SP_STT_BACKUPTableAdapter();
 			this.checkBoxWithInit = new System.Windows.Forms.CheckBox();
 			this.groupBox = new System.Windows.Forms.GroupBox();
 			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
 			this.timeEditRestore = new DevExpress.XtraEditors.TimeEdit();
 			this.dateEditRestore = new DevExpress.XtraEditors.DateEdit();
 			this.label1 = new System.Windows.Forms.Label();
+			this.databasesTableAdapter = new SystemAdmin.DSTableAdapters.databasesTableAdapter();
+			this.sP_STT_BACKUPTableAdapter = new SystemAdmin.DSTableAdapters.SP_STT_BACKUPTableAdapter();
 			this.toolStrip.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridViewDatabases)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.databasesBindingSource)).BeginInit();
@@ -97,6 +97,7 @@
 			this.backUpBtn.Name = "backUpBtn";
 			this.backUpBtn.Size = new System.Drawing.Size(82, 36);
 			this.backUpBtn.Text = "Sao lưu";
+			this.backUpBtn.Click += new System.EventHandler(this.backUpBtn_Click);
 			// 
 			// restoreBtn
 			// 
@@ -105,6 +106,7 @@
 			this.restoreBtn.Name = "restoreBtn";
 			this.restoreBtn.Size = new System.Drawing.Size(90, 36);
 			this.restoreBtn.Text = "Phục hồi";
+			this.restoreBtn.Click += new System.EventHandler(this.restoreBtn_Click);
 			// 
 			// toolStripSplitButtonTimeRestore
 			// 
@@ -119,7 +121,6 @@
 			// 
 			// timeRestoreParamenterOn
 			// 
-			this.timeRestoreParamenterOn.Image = ((System.Drawing.Image)(resources.GetObject("timeRestoreParamenterOn.Image")));
 			this.timeRestoreParamenterOn.Name = "timeRestoreParamenterOn";
 			this.timeRestoreParamenterOn.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.B)));
@@ -129,6 +130,7 @@
 			// 
 			// timeRestoreParamenterOff
 			// 
+			this.timeRestoreParamenterOff.Image = ((System.Drawing.Image)(resources.GetObject("timeRestoreParamenterOff.Image")));
 			this.timeRestoreParamenterOff.Name = "timeRestoreParamenterOff";
 			this.timeRestoreParamenterOff.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.T)));
@@ -204,10 +206,6 @@
 			this.dS.DataSetName = "DS";
 			this.dS.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
 			// 
-			// databasesTableAdapter
-			// 
-			this.databasesTableAdapter.ClearBeforeFill = true;
-			// 
 			// toolStrip1
 			// 
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -257,6 +255,7 @@
 			this.dataGridViewBackup.ReadOnly = true;
 			this.dataGridViewBackup.Size = new System.Drawing.Size(744, 231);
 			this.dataGridViewBackup.TabIndex = 3;
+			this.dataGridViewBackup.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewBackup_CellClick);
 			// 
 			// positionDataGridViewTextBoxColumn
 			// 
@@ -295,14 +294,11 @@
 			this.sPSTTBACKUPBindingSource.DataMember = "SP_STT_BACKUP";
 			this.sPSTTBACKUPBindingSource.DataSource = this.dS;
 			// 
-			// sP_STT_BACKUPTableAdapter
-			// 
-			this.sP_STT_BACKUPTableAdapter.ClearBeforeFill = true;
-			// 
 			// checkBoxWithInit
 			// 
 			this.checkBoxWithInit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.checkBoxWithInit.AutoSize = true;
+			this.checkBoxWithInit.Enabled = false;
 			this.checkBoxWithInit.Location = new System.Drawing.Point(504, 310);
 			this.checkBoxWithInit.Name = "checkBoxWithInit";
 			this.checkBoxWithInit.Size = new System.Drawing.Size(308, 17);
@@ -370,6 +366,14 @@
 			this.label1.Size = new System.Drawing.Size(142, 13);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Thời điểm bạn muốn phụ hồi";
+			// 
+			// databasesTableAdapter
+			// 
+			this.databasesTableAdapter.ClearBeforeFill = true;
+			// 
+			// sP_STT_BACKUPTableAdapter
+			// 
+			this.sP_STT_BACKUPTableAdapter.ClearBeforeFill = true;
 			// 
 			// BackupAndRestore
 			// 
