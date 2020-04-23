@@ -39,39 +39,39 @@
 			this.createDeviceBtn = new System.Windows.Forms.ToolStripButton();
 			this.exitBtn = new System.Windows.Forms.ToolStripButton();
 			this.dataGridViewDatabases = new System.Windows.Forms.DataGridView();
-			this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.databaseidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.databasesBindingSource = new System.Windows.Forms.BindingSource();
-			this.dS = new SystemAdmin.DS();
-			this.databasesTableAdapter = new SystemAdmin.DSTableAdapters.databasesTableAdapter();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripTextBoxDatabaseName = new System.Windows.Forms.ToolStripTextBox();
 			this.toolStripTextBoxSTT = new System.Windows.Forms.ToolStripTextBox();
 			this.dataGridViewBackup = new System.Windows.Forms.DataGridView();
-			this.positionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.backupstartdateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.usernameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.sPSTTBACKUPBindingSource = new System.Windows.Forms.BindingSource();
-			this.sP_STT_BACKUPTableAdapter = new SystemAdmin.DSTableAdapters.SP_STT_BACKUPTableAdapter();
 			this.checkBoxWithInit = new System.Windows.Forms.CheckBox();
 			this.groupBox = new System.Windows.Forms.GroupBox();
 			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
 			this.timeEditRestore = new DevExpress.XtraEditors.TimeEdit();
 			this.dateEditRestore = new DevExpress.XtraEditors.DateEdit();
 			this.label1 = new System.Windows.Forms.Label();
+			this.positionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.backupstartdateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.usernameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.sPSTTBACKUPBindingSource = new System.Windows.Forms.BindingSource();
+			this.dS = new SystemAdmin.DS();
+			this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.databaseidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.databasesBindingSource = new System.Windows.Forms.BindingSource();
+			this.databasesTableAdapter = new SystemAdmin.DSTableAdapters.databasesTableAdapter();
+			this.sP_STT_BACKUPTableAdapter = new SystemAdmin.DSTableAdapters.SP_STT_BACKUPTableAdapter();
 			this.toolStrip.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridViewDatabases)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.databasesBindingSource)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.dS)).BeginInit();
 			this.toolStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridViewBackup)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.sPSTTBACKUPBindingSource)).BeginInit();
 			this.groupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.timeEditRestore.Properties)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dateEditRestore.Properties.CalendarTimeProperties)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dateEditRestore.Properties)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.sPSTTBACKUPBindingSource)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.dS)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.databasesBindingSource)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// toolStrip
@@ -105,6 +105,7 @@
 			this.restoreBtn.Name = "restoreBtn";
 			this.restoreBtn.Size = new System.Drawing.Size(90, 36);
 			this.restoreBtn.Text = "Phục hồi";
+			this.restoreBtn.Click += new System.EventHandler(this.restoreBtn_Click);
 			// 
 			// toolStripSplitButtonTimeRestore
 			// 
@@ -177,37 +178,6 @@
 			this.dataGridViewDatabases.TabIndex = 1;
 			this.dataGridViewDatabases.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
 			// 
-			// nameDataGridViewTextBoxColumn
-			// 
-			this.nameDataGridViewTextBoxColumn.DataPropertyName = "name";
-			this.nameDataGridViewTextBoxColumn.HeaderText = "Cơ sở dữ liệu";
-			this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-			this.nameDataGridViewTextBoxColumn.ReadOnly = true;
-			this.nameDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-			this.nameDataGridViewTextBoxColumn.Width = 240;
-			// 
-			// databaseidDataGridViewTextBoxColumn
-			// 
-			this.databaseidDataGridViewTextBoxColumn.DataPropertyName = "database_id";
-			this.databaseidDataGridViewTextBoxColumn.HeaderText = "database_id";
-			this.databaseidDataGridViewTextBoxColumn.Name = "databaseidDataGridViewTextBoxColumn";
-			this.databaseidDataGridViewTextBoxColumn.ReadOnly = true;
-			this.databaseidDataGridViewTextBoxColumn.Visible = false;
-			// 
-			// databasesBindingSource
-			// 
-			this.databasesBindingSource.DataMember = "databases";
-			this.databasesBindingSource.DataSource = this.dS;
-			// 
-			// dS
-			// 
-			this.dS.DataSetName = "DS";
-			this.dS.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-			// 
-			// databasesTableAdapter
-			// 
-			this.databasesTableAdapter.ClearBeforeFill = true;
-			// 
 			// toolStrip1
 			// 
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -257,52 +227,13 @@
 			this.dataGridViewBackup.ReadOnly = true;
 			this.dataGridViewBackup.Size = new System.Drawing.Size(744, 231);
 			this.dataGridViewBackup.TabIndex = 3;
-			// 
-			// positionDataGridViewTextBoxColumn
-			// 
-			this.positionDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.positionDataGridViewTextBoxColumn.DataPropertyName = "position";
-			this.positionDataGridViewTextBoxColumn.HeaderText = "Bản sao lưu thứ #";
-			this.positionDataGridViewTextBoxColumn.Name = "positionDataGridViewTextBoxColumn";
-			this.positionDataGridViewTextBoxColumn.ReadOnly = true;
-			// 
-			// nameDataGridViewTextBoxColumn1
-			// 
-			this.nameDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.nameDataGridViewTextBoxColumn1.DataPropertyName = "name";
-			this.nameDataGridViewTextBoxColumn1.HeaderText = "Diễn giải";
-			this.nameDataGridViewTextBoxColumn1.Name = "nameDataGridViewTextBoxColumn1";
-			this.nameDataGridViewTextBoxColumn1.ReadOnly = true;
-			// 
-			// backupstartdateDataGridViewTextBoxColumn
-			// 
-			this.backupstartdateDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.backupstartdateDataGridViewTextBoxColumn.DataPropertyName = "backup_start_date";
-			this.backupstartdateDataGridViewTextBoxColumn.HeaderText = "Ngày giờ sao lưu";
-			this.backupstartdateDataGridViewTextBoxColumn.Name = "backupstartdateDataGridViewTextBoxColumn";
-			this.backupstartdateDataGridViewTextBoxColumn.ReadOnly = true;
-			// 
-			// usernameDataGridViewTextBoxColumn
-			// 
-			this.usernameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.usernameDataGridViewTextBoxColumn.DataPropertyName = "user_name";
-			this.usernameDataGridViewTextBoxColumn.HeaderText = "User sao lưu";
-			this.usernameDataGridViewTextBoxColumn.Name = "usernameDataGridViewTextBoxColumn";
-			this.usernameDataGridViewTextBoxColumn.ReadOnly = true;
-			// 
-			// sPSTTBACKUPBindingSource
-			// 
-			this.sPSTTBACKUPBindingSource.DataMember = "SP_STT_BACKUP";
-			this.sPSTTBACKUPBindingSource.DataSource = this.dS;
-			// 
-			// sP_STT_BACKUPTableAdapter
-			// 
-			this.sP_STT_BACKUPTableAdapter.ClearBeforeFill = true;
+			this.dataGridViewBackup.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewBackup_CellClick);
 			// 
 			// checkBoxWithInit
 			// 
 			this.checkBoxWithInit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.checkBoxWithInit.AutoSize = true;
+			this.checkBoxWithInit.Enabled = false;
 			this.checkBoxWithInit.Location = new System.Drawing.Point(504, 310);
 			this.checkBoxWithInit.Name = "checkBoxWithInit";
 			this.checkBoxWithInit.Size = new System.Drawing.Size(308, 17);
@@ -371,6 +302,78 @@
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Thời điểm bạn muốn phụ hồi";
 			// 
+			// positionDataGridViewTextBoxColumn
+			// 
+			this.positionDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.positionDataGridViewTextBoxColumn.DataPropertyName = "position";
+			this.positionDataGridViewTextBoxColumn.HeaderText = "Bản sao lưu thứ #";
+			this.positionDataGridViewTextBoxColumn.Name = "positionDataGridViewTextBoxColumn";
+			this.positionDataGridViewTextBoxColumn.ReadOnly = true;
+			// 
+			// nameDataGridViewTextBoxColumn1
+			// 
+			this.nameDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.nameDataGridViewTextBoxColumn1.DataPropertyName = "name";
+			this.nameDataGridViewTextBoxColumn1.HeaderText = "Diễn giải";
+			this.nameDataGridViewTextBoxColumn1.Name = "nameDataGridViewTextBoxColumn1";
+			this.nameDataGridViewTextBoxColumn1.ReadOnly = true;
+			// 
+			// backupstartdateDataGridViewTextBoxColumn
+			// 
+			this.backupstartdateDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.backupstartdateDataGridViewTextBoxColumn.DataPropertyName = "backup_start_date";
+			this.backupstartdateDataGridViewTextBoxColumn.HeaderText = "Ngày giờ sao lưu";
+			this.backupstartdateDataGridViewTextBoxColumn.Name = "backupstartdateDataGridViewTextBoxColumn";
+			this.backupstartdateDataGridViewTextBoxColumn.ReadOnly = true;
+			// 
+			// usernameDataGridViewTextBoxColumn
+			// 
+			this.usernameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.usernameDataGridViewTextBoxColumn.DataPropertyName = "user_name";
+			this.usernameDataGridViewTextBoxColumn.HeaderText = "User sao lưu";
+			this.usernameDataGridViewTextBoxColumn.Name = "usernameDataGridViewTextBoxColumn";
+			this.usernameDataGridViewTextBoxColumn.ReadOnly = true;
+			// 
+			// sPSTTBACKUPBindingSource
+			// 
+			this.sPSTTBACKUPBindingSource.DataMember = "SP_STT_BACKUP";
+			this.sPSTTBACKUPBindingSource.DataSource = this.dS;
+			// 
+			// dS
+			// 
+			this.dS.DataSetName = "DS";
+			this.dS.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+			// 
+			// nameDataGridViewTextBoxColumn
+			// 
+			this.nameDataGridViewTextBoxColumn.DataPropertyName = "name";
+			this.nameDataGridViewTextBoxColumn.HeaderText = "Cơ sở dữ liệu";
+			this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+			this.nameDataGridViewTextBoxColumn.ReadOnly = true;
+			this.nameDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			this.nameDataGridViewTextBoxColumn.Width = 240;
+			// 
+			// databaseidDataGridViewTextBoxColumn
+			// 
+			this.databaseidDataGridViewTextBoxColumn.DataPropertyName = "database_id";
+			this.databaseidDataGridViewTextBoxColumn.HeaderText = "database_id";
+			this.databaseidDataGridViewTextBoxColumn.Name = "databaseidDataGridViewTextBoxColumn";
+			this.databaseidDataGridViewTextBoxColumn.ReadOnly = true;
+			this.databaseidDataGridViewTextBoxColumn.Visible = false;
+			// 
+			// databasesBindingSource
+			// 
+			this.databasesBindingSource.DataMember = "databases";
+			this.databasesBindingSource.DataSource = this.dS;
+			// 
+			// databasesTableAdapter
+			// 
+			this.databasesTableAdapter.ClearBeforeFill = true;
+			// 
+			// sP_STT_BACKUPTableAdapter
+			// 
+			this.sP_STT_BACKUPTableAdapter.ClearBeforeFill = true;
+			// 
 			// BackupAndRestore
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -391,17 +394,17 @@
 			this.toolStrip.ResumeLayout(false);
 			this.toolStrip.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridViewDatabases)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.databasesBindingSource)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.dS)).EndInit();
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridViewBackup)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.sPSTTBACKUPBindingSource)).EndInit();
 			this.groupBox.ResumeLayout(false);
 			this.groupBox.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.timeEditRestore.Properties)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dateEditRestore.Properties.CalendarTimeProperties)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dateEditRestore.Properties)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.sPSTTBACKUPBindingSource)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.dS)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.databasesBindingSource)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

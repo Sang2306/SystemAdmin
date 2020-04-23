@@ -77,7 +77,12 @@ namespace SystemAdmin
 				string logicalname = database_name.Trim() + "_DEVICE";
 				checkIfDeviceExisted(logicalname);
 				//show các bản backup của database đã chọn
-				sP_STT_BACKUPTableAdapter.Fill(dS.SP_STT_BACKUP, database_name);
+				try
+				{
+					sP_STT_BACKUPTableAdapter.Fill(dS.SP_STT_BACKUP, database_name);
+				}
+				catch (Exception)
+				{ }
 			}
 			catch (ArgumentOutOfRangeException)
 			{
@@ -100,6 +105,8 @@ namespace SystemAdmin
 			{
 				MessageBox.Show("Không thể tạo device", "Lỗi tạo device", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
+
+			//Đóng/mở các nút trên giao diện
 			createDeviceBtn.Enabled = false;
 			backUpBtn.Enabled = true;
 			restoreBtn.Enabled = true;
@@ -150,6 +157,31 @@ namespace SystemAdmin
 			}
 			Program.ExecSqlDataReader(command).Close();
 			sP_STT_BACKUPTableAdapter.Fill(dS.SP_STT_BACKUP, database_name);
+		}
+
+		private void dataGridViewBackup_CellClick(object sender, DataGridViewCellEventArgs e)
+		{
+			try
+			{
+				string postion = dataGridViewBackup.Rows[e.RowIndex].Cells[0].FormattedValue.ToString();
+				toolStripTextBoxSTT.Text = postion;
+			}
+			catch (Exception)
+			{ }
+		}
+
+		private void restoreBtn_Click(object sender, EventArgs e)
+		{
+			string restore_command_step_1 = "ALTER DATABASE "+ database_name +" SET SINGLE_USER WITH ROLLBACK IMMEDIATE";
+			Program.ExecSqlDataReader(restore_command_step_1).Close();
+			string restore_command_step_2 = "USE tempdb";
+			Program.ExecSqlDataReader(restore_command_step_2).Close();
+			string logicalname = database_name.Trim() + "_DEVICE";
+			string restore_command_step_3 = "RESTORE DATABASE " + database_name + " FROM  " + logicalname + "  WITH FILE=" + toolStripTextBoxSTT.Text + ", REPLACE";
+			Program.ExecSqlDataReader(restore_command_step_3).Close();
+			string restore_command_step_4 = "ALTER DATABASE " + database_name + " SET MULTI_USER";
+			Program.ExecSqlDataReader(restore_command_step_4).Close();
+			MessageBox.Show("Phục hồi về bản backup thứ " + toolStripTextBoxSTT.Text, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 	}
 }
