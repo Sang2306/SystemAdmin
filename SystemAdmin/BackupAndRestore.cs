@@ -15,12 +15,11 @@ namespace SystemAdmin
 	{
 		Image img = null;
 		string database_name;
-		string selected_logical_name;
 		public BackupAndRestore()
 		{
 			InitializeComponent();
-			img = timeRestoreParamenterOn.Image;
-	
+			img = timeRestoreParamenterOff.Image;
+			groupBox.Visible = false;
 		}
 
 		private void BackupAndRestore_FormClosed(object sender, FormClosedEventArgs e)
@@ -124,7 +123,6 @@ namespace SystemAdmin
 					backUpBtn.Enabled = false;
 					restoreBtn.Enabled = false;
 					toolStripSplitButtonTimeRestore.Enabled = false;
-					selected_logical_name = "";
 					return false;
 				}
 				createDeviceBtn.Enabled = false;
