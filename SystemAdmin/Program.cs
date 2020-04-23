@@ -14,10 +14,11 @@ namespace SystemAdmin
 		public static SqlConnection connect = new SqlConnection();
 		public static String connectString = "";
 		public static LoginForm loginForm;
-		public static string database="tempdb";
+		public static string database = "tempdb";
 		public static string serverLogin;
 		public static string password;
 		public static string servername;
+		public static string backup_device_path = "C:\\Program Files\\Microsoft SQL Server\\MSSQL12.MSSQLSERVER\\MSSQL\\Backup\\";
 
 		/// </summary>
 		[STAThread]
@@ -71,6 +72,30 @@ namespace SystemAdmin
 				MessageBox.Show(ex.Message);
 				return null;
 			}
+		}
+		public static void execStoreProcedure(SqlCommand sqlcmd)
+		{
+			if (Program.connect.State == ConnectionState.Closed) Program.connect.Open();
+			sqlcmd.ExecuteNonQuery();
+		}
+		public static int execStoreProcedureWithReturnValue(SqlCommand sqlcmd)
+		{
+			if (Program.connect.State == ConnectionState.Closed) Program.connect.Open();
+			SqlParameter retval = sqlcmd.Parameters.Add("@return_value", SqlDbType.Int);
+			retval.Direction = ParameterDirection.ReturnValue;
+			try { sqlcmd.ExecuteNonQuery(); }
+			catch (Exception) { }
+			return int.Parse(sqlcmd.Parameters["@return_value"].Value.ToString());
+
+		}
+		public static DataTable ExecSqlDataTable(String cmd)
+		{
+			DataTable dt = new DataTable();
+			if (Program.connect.State == ConnectionState.Closed) Program.connect.Open();
+			SqlDataAdapter da = new SqlDataAdapter(cmd, Program.connect);
+			da.Fill(dt);
+			connect.Close();
+			return dt;
 		}
 	}
 }

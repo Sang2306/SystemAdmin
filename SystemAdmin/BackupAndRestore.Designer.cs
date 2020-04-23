@@ -28,11 +28,12 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BackupAndRestore));
 			this.toolStrip = new System.Windows.Forms.ToolStrip();
 			this.backUpBtn = new System.Windows.Forms.ToolStripButton();
 			this.restoreBtn = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSplitButton = new System.Windows.Forms.ToolStripDropDownButton();
+			this.toolStripSplitButtonTimeRestore = new System.Windows.Forms.ToolStripDropDownButton();
 			this.timeRestoreParamenterOn = new System.Windows.Forms.ToolStripMenuItem();
 			this.timeRestoreParamenterOff = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -41,19 +42,19 @@
 			this.dataGridViewDatabases = new System.Windows.Forms.DataGridView();
 			this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.databaseidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.databasesBindingSource = new System.Windows.Forms.BindingSource();
+			this.databasesBindingSource = new System.Windows.Forms.BindingSource(this.components);
 			this.dS = new SystemAdmin.DS();
 			this.databasesTableAdapter = new SystemAdmin.DSTableAdapters.databasesTableAdapter();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripTextBoxDatabaseName = new System.Windows.Forms.ToolStripTextBox();
 			this.toolStripTextBoxSTT = new System.Windows.Forms.ToolStripTextBox();
-			this.dataGridView2 = new System.Windows.Forms.DataGridView();
+			this.dataGridViewBackup = new System.Windows.Forms.DataGridView();
 			this.positionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.backupstartdateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.usernameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.sPSTTBACKUPBindingSource = new System.Windows.Forms.BindingSource();
+			this.sPSTTBACKUPBindingSource = new System.Windows.Forms.BindingSource(this.components);
 			this.sP_STT_BACKUPTableAdapter = new SystemAdmin.DSTableAdapters.SP_STT_BACKUPTableAdapter();
 			this.checkBoxWithInit = new System.Windows.Forms.CheckBox();
 			this.groupBox = new System.Windows.Forms.GroupBox();
@@ -66,7 +67,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.databasesBindingSource)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dS)).BeginInit();
 			this.toolStrip1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.dataGridViewBackup)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.sPSTTBACKUPBindingSource)).BeginInit();
 			this.groupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.timeEditRestore.Properties)).BeginInit();
@@ -80,7 +81,7 @@
 			this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.backUpBtn,
             this.restoreBtn,
-            this.toolStripSplitButton,
+            this.toolStripSplitButtonTimeRestore,
             this.toolStripSeparator1,
             this.createDeviceBtn,
             this.exitBtn});
@@ -105,16 +106,16 @@
 			this.restoreBtn.Size = new System.Drawing.Size(90, 36);
 			this.restoreBtn.Text = "Phục hồi";
 			// 
-			// toolStripSplitButton
+			// toolStripSplitButtonTimeRestore
 			// 
-			this.toolStripSplitButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.toolStripSplitButtonTimeRestore.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.timeRestoreParamenterOn,
             this.timeRestoreParamenterOff});
-			this.toolStripSplitButton.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton.Image")));
-			this.toolStripSplitButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripSplitButton.Name = "toolStripSplitButton";
-			this.toolStripSplitButton.Size = new System.Drawing.Size(224, 36);
-			this.toolStripSplitButton.Text = "Tham số phục hồi theo thời gian";
+			this.toolStripSplitButtonTimeRestore.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButtonTimeRestore.Image")));
+			this.toolStripSplitButtonTimeRestore.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripSplitButtonTimeRestore.Name = "toolStripSplitButtonTimeRestore";
+			this.toolStripSplitButtonTimeRestore.Size = new System.Drawing.Size(224, 36);
+			this.toolStripSplitButtonTimeRestore.Text = "Tham số phục hồi theo thời gian";
 			// 
 			// timeRestoreParamenterOn
 			// 
@@ -122,7 +123,7 @@
 			this.timeRestoreParamenterOn.Name = "timeRestoreParamenterOn";
 			this.timeRestoreParamenterOn.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.B)));
-			this.timeRestoreParamenterOn.Size = new System.Drawing.Size(164, 22);
+			this.timeRestoreParamenterOn.Size = new System.Drawing.Size(180, 38);
 			this.timeRestoreParamenterOn.Text = "Bật";
 			this.timeRestoreParamenterOn.Click += new System.EventHandler(this.timeRestoreParamenterOn_Click);
 			// 
@@ -131,7 +132,7 @@
 			this.timeRestoreParamenterOff.Name = "timeRestoreParamenterOff";
 			this.timeRestoreParamenterOff.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.T)));
-			this.timeRestoreParamenterOff.Size = new System.Drawing.Size(164, 22);
+			this.timeRestoreParamenterOff.Size = new System.Drawing.Size(180, 38);
 			this.timeRestoreParamenterOff.Text = "Tắt";
 			this.timeRestoreParamenterOff.Click += new System.EventHandler(this.timeRestoreParamenterOff_Click);
 			// 
@@ -238,24 +239,24 @@
 			this.toolStripTextBoxSTT.Size = new System.Drawing.Size(50, 25);
 			this.toolStripTextBoxSTT.Text = "0";
 			// 
-			// dataGridView2
+			// dataGridViewBackup
 			// 
-			this.dataGridView2.AllowUserToAddRows = false;
-			this.dataGridView2.AllowUserToDeleteRows = false;
-			this.dataGridView2.AutoGenerateColumns = false;
-			this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+			this.dataGridViewBackup.AllowUserToAddRows = false;
+			this.dataGridViewBackup.AllowUserToDeleteRows = false;
+			this.dataGridViewBackup.AutoGenerateColumns = false;
+			this.dataGridViewBackup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dataGridViewBackup.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.positionDataGridViewTextBoxColumn,
             this.nameDataGridViewTextBoxColumn1,
             this.backupstartdateDataGridViewTextBoxColumn,
             this.usernameDataGridViewTextBoxColumn});
-			this.dataGridView2.DataSource = this.sPSTTBACKUPBindingSource;
-			this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Top;
-			this.dataGridView2.Location = new System.Drawing.Point(240, 64);
-			this.dataGridView2.Name = "dataGridView2";
-			this.dataGridView2.ReadOnly = true;
-			this.dataGridView2.Size = new System.Drawing.Size(744, 231);
-			this.dataGridView2.TabIndex = 3;
+			this.dataGridViewBackup.DataSource = this.sPSTTBACKUPBindingSource;
+			this.dataGridViewBackup.Dock = System.Windows.Forms.DockStyle.Top;
+			this.dataGridViewBackup.Location = new System.Drawing.Point(240, 64);
+			this.dataGridViewBackup.Name = "dataGridViewBackup";
+			this.dataGridViewBackup.ReadOnly = true;
+			this.dataGridViewBackup.Size = new System.Drawing.Size(744, 231);
+			this.dataGridViewBackup.TabIndex = 3;
 			// 
 			// positionDataGridViewTextBoxColumn
 			// 
@@ -377,7 +378,7 @@
 			this.ClientSize = new System.Drawing.Size(984, 561);
 			this.Controls.Add(this.groupBox);
 			this.Controls.Add(this.checkBoxWithInit);
-			this.Controls.Add(this.dataGridView2);
+			this.Controls.Add(this.dataGridViewBackup);
 			this.Controls.Add(this.toolStrip1);
 			this.Controls.Add(this.dataGridViewDatabases);
 			this.Controls.Add(this.toolStrip);
@@ -394,7 +395,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.dS)).EndInit();
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.dataGridViewBackup)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.sPSTTBACKUPBindingSource)).EndInit();
 			this.groupBox.ResumeLayout(false);
 			this.groupBox.PerformLayout();
@@ -411,7 +412,7 @@
 		private System.Windows.Forms.ToolStrip toolStrip;
 		private System.Windows.Forms.ToolStripButton backUpBtn;
 		private System.Windows.Forms.ToolStripButton restoreBtn;
-		private System.Windows.Forms.ToolStripDropDownButton toolStripSplitButton;
+		private System.Windows.Forms.ToolStripDropDownButton toolStripSplitButtonTimeRestore;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripButton createDeviceBtn;
 		private System.Windows.Forms.ToolStripButton exitBtn;
@@ -425,7 +426,7 @@
 		private System.Windows.Forms.ToolStripLabel toolStripLabel1;
 		private System.Windows.Forms.ToolStripTextBox toolStripTextBoxDatabaseName;
 		private System.Windows.Forms.ToolStripTextBox toolStripTextBoxSTT;
-		private System.Windows.Forms.DataGridView dataGridView2;
+		private System.Windows.Forms.DataGridView dataGridViewBackup;
 		private System.Windows.Forms.BindingSource sPSTTBACKUPBindingSource;
 		private DSTableAdapters.SP_STT_BACKUPTableAdapter sP_STT_BACKUPTableAdapter;
 		private System.Windows.Forms.CheckBox checkBoxWithInit;

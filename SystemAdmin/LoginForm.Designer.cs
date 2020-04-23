@@ -77,6 +77,7 @@
 			this.textBoxPassword.PasswordChar = '*';
 			this.textBoxPassword.Size = new System.Drawing.Size(230, 30);
 			this.textBoxPassword.TabIndex = 11;
+			this.textBoxPassword.Text = "2306";
 			// 
 			// textBoxLoginName
 			// 
@@ -86,6 +87,7 @@
 			this.textBoxLoginName.Name = "textBoxLoginName";
 			this.textBoxLoginName.Size = new System.Drawing.Size(230, 30);
 			this.textBoxLoginName.TabIndex = 10;
+			this.textBoxLoginName.Text = "sa";
 			// 
 			// textBoxServerName
 			// 
@@ -95,6 +97,7 @@
 			this.textBoxServerName.Name = "textBoxServerName";
 			this.textBoxServerName.Size = new System.Drawing.Size(230, 30);
 			this.textBoxServerName.TabIndex = 9;
+			this.textBoxServerName.Text = "DESKTOP-3R5UOAO";
 			// 
 			// buttonExit
 			// 
