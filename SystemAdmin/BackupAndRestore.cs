@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,10 +14,13 @@ namespace SystemAdmin
 	public partial class BackupAndRestore : Form
 	{
 		Image img = null;
+		string database_name;
+		string selected_logical_name;
 		public BackupAndRestore()
 		{
 			InitializeComponent();
 			img = timeRestoreParamenterOn.Image;
+	
 		}
 
 		private void BackupAndRestore_FormClosed(object sender, FormClosedEventArgs e)
@@ -28,6 +32,16 @@ namespace SystemAdmin
 		{
 			// TODO: This line of code loads data into the 'dS.databases' table. You can move, or remove it, as needed.
 			this.databasesTableAdapter.Fill(this.dS.databases);
+
+			try
+			{
+				database_name = dataGridViewDatabases.Rows[0].Cells[0].FormattedValue.ToString();
+				//set toolStripTextBoxDatabaseName to the name of database
+				toolStripTextBoxDatabaseName.Text = database_name;
+				//kiểm tra xem back up device đã được tạo cho cơ sở dữ liệu đang chọn hay chưa
+				string logicalname = database_name + "_DEVICE";
+				checkIfDeviceExisted(logicalname);
+			}catch (Exception){}
 
 		}
 
@@ -50,14 +64,16 @@ namespace SystemAdmin
 			timeRestoreParamenterOff.Image = img;
 			groupBox.Visible = false;
 		}
-
 		private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
 		{
 			try
 			{
-				string database_name = dataGridViewDatabases.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
+				database_name = dataGridViewDatabases.Rows[e.RowIndex].Cells[e.ColumnIndex].FormattedValue.ToString();
 				//set toolStripTextBoxDatabaseName to the name of database
 				toolStripTextBoxDatabaseName.Text = database_name;
+				//kiểm tra xem back up device đã được tạo cho cơ sở dữ liệu đang chọn hay chưa
+				string logicalname = database_name + "_DEVICE";
+				checkIfDeviceExisted(logicalname);
 			}
 			catch (ArgumentOutOfRangeException)
 			{
@@ -67,8 +83,63 @@ namespace SystemAdmin
 
 		private void createDeviceBtn_Click(object sender, EventArgs e)
 		{
-			AddDeviceForm form = new AddDeviceForm();
-			form.ShowDialog(this);
+			//tạo device
+			string logicalname = database_name + "_DEVICE";
+			string physicalname = Program.backup_device_path + logicalname + ".bak";
+			string devtype = "disk";
+			SqlCommand sql_command = new SqlCommand("sp_addumpdevice", Program.connect);
+			sql_command.CommandType = CommandType.StoredProcedure;
+			sql_command.Parameters.AddWithValue("@devtype", devtype);
+			sql_command.Parameters.AddWithValue("@logicalname ", logicalname);
+			sql_command.Parameters.AddWithValue("@physicalname ", physicalname);
+			if (Program.execStoreProcedureWithReturnValue(sql_command)==1)
+			{
+				MessageBox.Show("Không thể tạo device", "Lỗi tạo device", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			createDeviceBtn.Enabled = false;
+		}
+		private Boolean checkIfDeviceExisted(string logicalname)
+		{
+			string command = "SELECT name FROM sys.backup_devices WHERE name='" + logicalname + "'";
+			SqlDataReader reader = Program.ExecSqlDataReader(command);
+			try
+			{
+				if (!reader.HasRows)
+				{
+					createDeviceBtn.Enabled = true;
+					backUpBtn.Enabled = false;
+					restoreBtn.Enabled = false;
+					toolStripSplitButtonTimeRestore.Enabled = false;
+					selected_logical_name = "";
+					return false;
+				}
+				reader.Read();
+				selected_logical_name = reader.GetString(0);
+				if (Convert.IsDBNull(selected_logical_name))
+				{
+					createDeviceBtn.Enabled = true;
+					backUpBtn.Enabled = false;
+					restoreBtn.Enabled = false;
+					toolStripSplitButtonTimeRestore.Enabled = false;
+					selected_logical_name = "";
+					return false;
+				}
+				createDeviceBtn.Enabled = false;
+				backUpBtn.Enabled = true;
+				restoreBtn.Enabled = true;
+				toolStripSplitButtonTimeRestore.Enabled = true;
+				return true;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Lỗi khi thực thi lệnh kiểm tra tồn tại device cho db" + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return false;
+			}
+			finally
+			{
+				reader.Close();
+				Program.connect.Close();
+			}
 		}
 	}
 }

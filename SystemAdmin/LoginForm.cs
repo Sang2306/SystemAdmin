@@ -27,7 +27,7 @@ namespace SystemAdmin
 			Program.servername = textBoxServerName.Text;
 			Program.serverLogin = textBoxLoginName.Text;
 			Program.password = textBoxPassword.Text;
-			int is_ok = 1;//Program.KetNoi();
+			int is_ok = Program.KetNoi();
 			if (is_ok != 0)
 			{
 				BackupAndRestore form = new BackupAndRestore();
