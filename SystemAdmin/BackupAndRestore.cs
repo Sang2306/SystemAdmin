@@ -149,10 +149,16 @@ namespace SystemAdmin
 			string command = "BACKUP DATABASE " + database_name + " TO " + logical_device_name;
 			if (checkBoxWithInit.Checked)
 			{
-				//todo khi nguoi dung chon thi xoa toan bo cac ban backup va backup phien ban moi
+				//khi nguoi dung chon thi xoa toan bo cac ban backup va backup phien ban moi
 				command += " WITH INIT;";
 				//Delete các bản backup cũ trong trường hợp một/nhièu bản chưa được phục hồi
-				string first = "DECLARE @media_set_id INT\n" +
+				string first = "declare @restore_history_id int\n" +
+			   $"select @restore_history_id=restore_history_id from msdb.dbo.restorehistory where destination_database_name='{database_name.Trim()}'\n" +
+				"delete from msdb.dbo.restorefilegroup where restore_history_id=@restore_history_id\n" +
+				"delete from msdb.dbo.restorefile where restore_history_id=@restore_history_id\n" +
+				"delete from msdb.dbo.restorehistory where restore_history_id=@restore_history_id\n";
+				//Delete các bản backup cũ trong trường hợp một/nhièu bản chưa được phục hồi
+				string second = "DECLARE @media_set_id INT\n" +
 				$"select @media_set_id = media_set_id from msdb.dbo.backupmediafamily where logical_device_name='{logical_device_name}'\n" +
 				"DECLARE @id INT\n" +
 				"DECLARE backupset_ids CURSOR FOR\n" +
@@ -169,11 +175,14 @@ namespace SystemAdmin
 				"END\n" +
 				"CLOSE backupset_ids\n" +
 				"DEALLOCATE backupset_ids\n";
+
 				SqlCommand sql = new SqlCommand();
 				sql.CommandText = first;
 				sql.CommandType = CommandType.Text;
 				if (Program.connect.State == ConnectionState.Closed) Program.connect.Open();
 				sql.Connection = Program.connect;
+				sql.ExecuteNonQuery();
+				sql.CommandText = second;
 				sql.ExecuteNonQuery();
 			}
 			else
