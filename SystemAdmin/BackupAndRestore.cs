@@ -145,11 +145,47 @@ namespace SystemAdmin
 
 		private void backUpBtn_Click(object sender, EventArgs e)
 		{
-			string command = "BACKUP DATABASE " + database_name + " TO " + database_name.Trim() + "_DEVICE";
+			string logical_device_name = database_name.Trim() + "_DEVICE";
+			string command = "BACKUP DATABASE " + database_name + " TO " + logical_device_name;
 			if (checkBoxWithInit.Checked)
 			{
+				//khi nguoi dung chon thi xoa toan bo cac ban backup va backup phien ban moi
 				command += " WITH INIT;";
-			}else
+				//Delete các bản backup cũ trong trường hợp một/nhièu bản chưa được phục hồi
+				string first = "declare @restore_history_id int\n" +
+			   $"select @restore_history_id=restore_history_id from msdb.dbo.restorehistory where destination_database_name='{database_name.Trim()}'\n" +
+				"delete from msdb.dbo.restorefilegroup where restore_history_id=@restore_history_id\n" +
+				"delete from msdb.dbo.restorefile where restore_history_id=@restore_history_id\n" +
+				"delete from msdb.dbo.restorehistory where restore_history_id=@restore_history_id\n";
+				//Delete các bản backup cũ trong trường hợp một/nhièu bản chưa được phục hồi
+				string second = "DECLARE @media_set_id INT\n" +
+				$"select @media_set_id = media_set_id from msdb.dbo.backupmediafamily where logical_device_name='{logical_device_name}'\n" +
+				"DECLARE @id INT\n" +
+				"DECLARE backupset_ids CURSOR FOR\n" +
+				"SELECT backup_set_id FROM msdb.dbo.backupset WHERE media_set_id=@media_set_id\n" +
+				"OPEN backupset_ids\n" +
+				"FETCH NEXT FROM backupset_ids INTO @id\n" +
+				"WHILE @@FETCH_STATUS = 0\n" +
+				"BEGIN\n" +
+				"   delete from msdb.dbo.backupfilegroup where backup_set_id=@id\n" +
+				"   delete from msdb.dbo.backupfile where backup_set_id=@id\n" +
+				"   delete from msdb.dbo.Backupset where backup_set_id=@id\n" +
+			   $"   delete from msdb.dbo.backupmediafamily where logical_device_name ='{logical_device_name}'\n" +
+				"   FETCH NEXT FROM backupset_ids INTO @id\n" +
+				"END\n" +
+				"CLOSE backupset_ids\n" +
+				"DEALLOCATE backupset_ids\n";
+
+				SqlCommand sql = new SqlCommand();
+				sql.CommandText = first;
+				sql.CommandType = CommandType.Text;
+				if (Program.connect.State == ConnectionState.Closed) Program.connect.Open();
+				sql.Connection = Program.connect;
+				sql.ExecuteNonQuery();
+				sql.CommandText = second;
+				sql.ExecuteNonQuery();
+			}
+			else
 			{
 				command += ";";
 			}
