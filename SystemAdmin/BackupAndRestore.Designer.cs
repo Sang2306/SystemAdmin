@@ -124,7 +124,7 @@
 			this.timeRestoreParamenterOn.Name = "timeRestoreParamenterOn";
 			this.timeRestoreParamenterOn.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.B)));
-			this.timeRestoreParamenterOn.Size = new System.Drawing.Size(180, 38);
+			this.timeRestoreParamenterOn.Size = new System.Drawing.Size(164, 22);
 			this.timeRestoreParamenterOn.Text = "Bật";
 			this.timeRestoreParamenterOn.Click += new System.EventHandler(this.timeRestoreParamenterOn_Click);
 			// 
@@ -134,7 +134,7 @@
 			this.timeRestoreParamenterOff.Name = "timeRestoreParamenterOff";
 			this.timeRestoreParamenterOff.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.T)));
-			this.timeRestoreParamenterOff.Size = new System.Drawing.Size(180, 38);
+			this.timeRestoreParamenterOff.Size = new System.Drawing.Size(164, 22);
 			this.timeRestoreParamenterOff.Text = "Tắt";
 			this.timeRestoreParamenterOff.Click += new System.EventHandler(this.timeRestoreParamenterOff_Click);
 			// 
@@ -242,6 +242,7 @@
 			this.dataGridViewBackup.AllowUserToAddRows = false;
 			this.dataGridViewBackup.AllowUserToDeleteRows = false;
 			this.dataGridViewBackup.AutoGenerateColumns = false;
+			this.dataGridViewBackup.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.dataGridViewBackup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dataGridViewBackup.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.positionDataGridViewTextBoxColumn,
@@ -298,7 +299,6 @@
 			// 
 			this.checkBoxWithInit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.checkBoxWithInit.AutoSize = true;
-			this.checkBoxWithInit.Enabled = false;
 			this.checkBoxWithInit.Location = new System.Drawing.Point(504, 310);
 			this.checkBoxWithInit.Name = "checkBoxWithInit";
 			this.checkBoxWithInit.Size = new System.Drawing.Size(308, 17);
