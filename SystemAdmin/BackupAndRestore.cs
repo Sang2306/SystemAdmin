@@ -91,7 +91,7 @@ namespace SystemAdmin
 
 		private void createDeviceBtn_Click(object sender, EventArgs e)
 		{
-			//tạo device
+			//tạo device de backup database
 			string logicalname = database_name.Trim() + "_DEVICE";
 			string physicalname = Program.backup_device_path + logicalname + ".bak";
 			string devtype = "disk";
@@ -103,8 +103,16 @@ namespace SystemAdmin
 			if (Program.execStoreProcedureWithReturnValue(sql_command)==1)
 			{
 				MessageBox.Show("Không thể tạo device", "Lỗi tạo device", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
 			}
-
+			//tao device de backup log
+			physicalname = Program.backup_device_path + logicalname + "_LOG" + ".bak";
+			sql_command.Parameters.AddWithValue("@physicalname ", physicalname);
+			if (Program.execStoreProcedureWithReturnValue(sql_command) == 1)
+			{
+				MessageBox.Show("Không thể tạo device để backup log", "Lỗi tạo device", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 			//Đóng/mở các nút trên giao diện
 			createDeviceBtn.Enabled = false;
 			backUpBtn.Enabled = true;
@@ -151,13 +159,22 @@ namespace SystemAdmin
 			{
 				//khi nguoi dung chon thi xoa toan bo cac ban backup va backup phien ban moi
 				command += " WITH INIT;";
-				//Delete các bản backup cũ trong trường hợp một/nhièu bản chưa được phục hồi
-				string first = "declare @restore_history_id int\n" +
-			   $"select @restore_history_id=restore_history_id from msdb.dbo.restorehistory where destination_database_name='{database_name.Trim()}'\n" +
-				"delete from msdb.dbo.restorefilegroup where restore_history_id=@restore_history_id\n" +
-				"delete from msdb.dbo.restorefile where restore_history_id=@restore_history_id\n" +
-				"delete from msdb.dbo.restorehistory where restore_history_id=@restore_history_id\n";
-				//Delete các bản backup cũ trong trường hợp một/nhièu bản chưa được phục hồi
+				//truong hop da co 1/nhieu ban backup dc phuc hoi
+				string first = "declare restore_history_id_set cursor for\n" +
+				$"select restore_history_id from msdb.dbo.restorehistory where destination_database_name='{database_name.Trim()}';\n" +
+				"declare @restore_history_id int\n" +
+				"open restore_history_id_set\n" +
+				"fetch next from restore_history_id_set into @restore_history_id\n" +
+				"while @@FETCH_STATUS = 0\n" +
+				"begin\n" +
+				"	delete from msdb.dbo.restorefilegroup where restore_history_id=@restore_history_id\n" +
+				"	delete from msdb.dbo.restorefile where restore_history_id=@restore_history_id\n" +
+				"	delete from msdb.dbo.restorehistory where restore_history_id=@restore_history_id\n" +
+				"	fetch next from restore_history_id_set into @restore_history_id\n" +
+				"end\n" +
+				"close restore_history_id_set\n" +
+				"deallocate restore_history_id_set\n";
+				//Xoa cac ban backup cu
 				string second = "DECLARE @media_set_id INT\n" +
 				$"select @media_set_id = media_set_id from msdb.dbo.backupmediafamily where logical_device_name='{logical_device_name}'\n" +
 				"DECLARE @id INT\n" +
@@ -175,7 +192,6 @@ namespace SystemAdmin
 				"END\n" +
 				"CLOSE backupset_ids\n" +
 				"DEALLOCATE backupset_ids\n";
-
 				SqlCommand sql = new SqlCommand();
 				sql.CommandText = first;
 				sql.CommandType = CommandType.Text;
@@ -206,15 +222,18 @@ namespace SystemAdmin
 
 		private void restoreBtn_Click(object sender, EventArgs e)
 		{
-			string restore_command_step_1 = "ALTER DATABASE "+ database_name +" SET SINGLE_USER WITH ROLLBACK IMMEDIATE";
-			Program.ExecSqlDataReader(restore_command_step_1).Close();
-			string restore_command_step_2 = "USE tempdb";
-			Program.ExecSqlDataReader(restore_command_step_2).Close();
+			if (toolStripTextBoxSTT.Text == "0")
+			{
+				MessageBox.Show("Không có bất kỳ bản sao lưu để phục hồi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				return;
+			}
 			string logicalname = database_name.Trim() + "_DEVICE";
-			string restore_command_step_3 = "RESTORE DATABASE " + database_name + " FROM  " + logicalname + "  WITH FILE=" + toolStripTextBoxSTT.Text + ", REPLACE";
-			Program.ExecSqlDataReader(restore_command_step_3).Close();
-			string restore_command_step_4 = "ALTER DATABASE " + database_name + " SET MULTI_USER";
-			Program.ExecSqlDataReader(restore_command_step_4).Close();
+			string restore = 
+				$"ALTER DATABASE {database_name} SET SINGLE_USER WITH ROLLBACK IMMEDIATE\n" +
+				"USE tempdb\n" +
+				$"RESTORE DATABASE {database_name} FROM {logicalname}  WITH FILE={toolStripTextBoxSTT.Text}, REPLACE\n" +
+				$"ALTER DATABASE {database_name} SET MULTI_USER";
+			Program.ExecSqlDataReader(restore).Close();
 			MessageBox.Show("Phục hồi về bản backup thứ " + toolStripTextBoxSTT.Text, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 	}
