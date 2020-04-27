@@ -124,7 +124,7 @@
 			this.timeRestoreParamenterOn.Name = "timeRestoreParamenterOn";
 			this.timeRestoreParamenterOn.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.B)));
-			this.timeRestoreParamenterOn.Size = new System.Drawing.Size(164, 22);
+			this.timeRestoreParamenterOn.Size = new System.Drawing.Size(180, 38);
 			this.timeRestoreParamenterOn.Text = "Bật";
 			this.timeRestoreParamenterOn.Click += new System.EventHandler(this.timeRestoreParamenterOn_Click);
 			// 
@@ -134,7 +134,7 @@
 			this.timeRestoreParamenterOff.Name = "timeRestoreParamenterOff";
 			this.timeRestoreParamenterOff.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.T)));
-			this.timeRestoreParamenterOff.Size = new System.Drawing.Size(164, 22);
+			this.timeRestoreParamenterOff.Size = new System.Drawing.Size(180, 38);
 			this.timeRestoreParamenterOff.Text = "Tắt";
 			this.timeRestoreParamenterOff.Click += new System.EventHandler(this.timeRestoreParamenterOff_Click);
 			// 
@@ -327,31 +327,33 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.richTextBox1.BackColor = System.Drawing.Color.White;
 			this.richTextBox1.Enabled = false;
-			this.richTextBox1.Location = new System.Drawing.Point(229, 71);
+			this.richTextBox1.Location = new System.Drawing.Point(181, 71);
 			this.richTextBox1.Name = "richTextBox1";
-			this.richTextBox1.Size = new System.Drawing.Size(343, 118);
+			this.richTextBox1.Size = new System.Drawing.Size(429, 118);
 			this.richTextBox1.TabIndex = 3;
 			this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
 			// 
 			// timeEditRestore
 			// 
-			this.timeEditRestore.EditValue = new System.DateTime(2020, 4, 18, 0, 0, 0, 0);
+			this.timeEditRestore.EditValue = new System.DateTime(2020, 4, 27, 0, 0, 0, 0);
 			this.timeEditRestore.Location = new System.Drawing.Point(472, 23);
 			this.timeEditRestore.Name = "timeEditRestore";
 			this.timeEditRestore.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-			this.timeEditRestore.Size = new System.Drawing.Size(100, 20);
+			this.timeEditRestore.Size = new System.Drawing.Size(138, 20);
 			this.timeEditRestore.TabIndex = 2;
 			// 
 			// dateEditRestore
 			// 
-			this.dateEditRestore.EditValue = null;
+			this.dateEditRestore.EditValue = new System.DateTime(2020, 4, 27, 9, 56, 58, 0);
 			this.dateEditRestore.Location = new System.Drawing.Point(326, 23);
 			this.dateEditRestore.Name = "dateEditRestore";
 			this.dateEditRestore.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
 			this.dateEditRestore.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+			this.dateEditRestore.Properties.CalendarView = DevExpress.XtraEditors.Repository.CalendarView.Vista;
+			this.dateEditRestore.Properties.VistaDisplayMode = DevExpress.Utils.DefaultBoolean.True;
 			this.dateEditRestore.Size = new System.Drawing.Size(136, 20);
 			this.dateEditRestore.TabIndex = 1;
 			// 
