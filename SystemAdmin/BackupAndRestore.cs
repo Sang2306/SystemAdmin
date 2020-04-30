@@ -82,6 +82,10 @@ namespace SystemAdmin
 				try
 				{
 					sP_STT_BACKUPTableAdapter.Fill(dS.SP_STT_BACKUP, database_name);
+					if (dataGridViewBackup.RowCount == 0)
+					{
+						toolStripTextBoxSTT.Text = "--";
+					}
 				}
 				catch (Exception)
 				{ }
@@ -98,24 +102,34 @@ namespace SystemAdmin
 			string logicalname = database_name.Trim() + "_DEVICE";
 			string physicalname = Program.backup_device_path + logicalname + ".bak";
 			string devtype = "disk";
-			SqlCommand sql_command = new SqlCommand("sp_addumpdevice", Program.connect);
-			sql_command.CommandType = CommandType.StoredProcedure;
-			sql_command.Parameters.AddWithValue("@devtype", devtype);
-			sql_command.Parameters.AddWithValue("@logicalname ", logicalname);
-			sql_command.Parameters.AddWithValue("@physicalname ", physicalname);
-			if (Program.execStoreProcedureWithReturnValue(sql_command)==1)
+			SqlCommand sql_command_1 = new SqlCommand("sp_addumpdevice", Program.connect);
+			sql_command_1.CommandType = CommandType.StoredProcedure;
+			sql_command_1.Parameters.AddWithValue("@devtype", devtype);
+			sql_command_1.Parameters.AddWithValue("@logicalname ", logicalname);
+			sql_command_1.Parameters.AddWithValue("@physicalname ", physicalname);
+			if (Program.execStoreProcedureWithReturnValue(sql_command_1) ==1)
 			{
 				MessageBox.Show("Không thể tạo device", "Lỗi tạo device", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
+
+
+
 			//tao device de backup log
-			physicalname = Program.backup_device_path + logicalname + "_LOG" + ".bak";
-			sql_command.Parameters.AddWithValue("@physicalname ", physicalname);
-			if (Program.execStoreProcedureWithReturnValue(sql_command) == 1)
+			logicalname = database_name.Trim() + "_DEVICE" + "_LOG";
+			physicalname = Program.backup_device_path + logicalname + ".bak";
+			SqlCommand sql_command_2 = new SqlCommand("sp_addumpdevice", Program.connect);
+			sql_command_2.CommandType = CommandType.StoredProcedure;
+			sql_command_2.Parameters.AddWithValue("@devtype", devtype);
+			sql_command_2.Parameters.AddWithValue("@logicalname ", logicalname);
+			sql_command_2.Parameters.AddWithValue("@physicalname ", physicalname);
+			if (Program.execStoreProcedureWithReturnValue(sql_command_2) == 1)
 			{
 				MessageBox.Show("Không thể tạo device để backup log", "Lỗi tạo device", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
+
+
 			//Đóng/mở các nút trên giao diện
 			createDeviceBtn.Enabled = false;
 			backUpBtn.Enabled = true;
@@ -208,8 +222,13 @@ namespace SystemAdmin
 			{
 				command += ";";
 			}
-			Program.ExecSqlDataReader(command).Close();
-			sP_STT_BACKUPTableAdapter.Fill(dS.SP_STT_BACKUP, database_name);
+			try
+			{
+				Program.ExecSqlDataReader(command).Close();
+				sP_STT_BACKUPTableAdapter.Fill(dS.SP_STT_BACKUP, database_name);
+			}
+			catch (Exception)
+			{ }
 		}
 
 		private void dataGridViewBackup_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -225,6 +244,13 @@ namespace SystemAdmin
 
 		private void restoreBtn_Click(object sender, EventArgs e)
 		{
+
+			if (toolStripTextBoxSTT.Text == "--")
+			{
+				MessageBox.Show("Không có bất kỳ bản sao lưu được chọn để phục hồi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				return;
+			}
+
 			string logical_device_name = database_name.Trim() + "_DEVICE";
 			//kiem tra thamm so thoi gian co dc chon hay khong
 			if (timeParameterChecked)
@@ -232,32 +258,53 @@ namespace SystemAdmin
 				DateTime date = dateEditRestore.DateTime;
 				DateTime time = timeEditRestore.Time;
 				string at = $"{date.Year}-{date.Month}-{date.Day} {time.TimeOfDay}";
-				string physicalname_backup_log = Program.backup_device_path + logical_device_name + "_LOG" + ".bak";   //file backup log
-				string physicalname_backup = Program.backup_device_path + logical_device_name + ".bak";
+				
+				try
+				{
+					Program.ExecSqlDataReader($"ALTER DATABASE {database_name} SET SINGLE_USER WITH ROLLBACK IMMEDIATE\n").Close();
 
-				Program.ExecSqlDataReader($"ALTER DATABASE {database_name} SET SINGLE_USER WITH ROLLBACK IMMEDIATE\n").Close();
-				Program.ExecSqlDataReader($"BACKUP LOG {database_name} TO DISK='{physicalname_backup_log}' WITH NORECOVERY\n").Close();
-				Program.ExecSqlDataReader($"RESTORE DATABASE {database_name} FROM DISK='{physicalname_backup}' WITH NORECOVERY\n").Close();
-				Program.ExecSqlDataReader($"RESTORE DATABASE {database_name} FROM DISK='{physicalname_backup_log}' WITH STOPAT='{at}'\n").Close();
-				Program.ExecSqlDataReader($"ALTER DATABASE {database_name} SET MULTI_USER\n").Close();
-				MessageBox.Show("Phục hồi về thời điểm " + at, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					Program.ExecSqlDataReader($"BACKUP LOG {database_name} TO {logical_device_name}_LOG WITH NORECOVERY, INIT\n").Close();
+
+					Program.ExecSqlDataReader($"RESTORE DATABASE {database_name} FROM {logical_device_name}  WITH NORECOVERY").Close();
+
+					Program.ExecSqlDataReader($"RESTORE DATABASE {database_name} FROM {logical_device_name}_LOG WITH STOPAT='{at}'\n").Close();
+
+					Program.ExecSqlDataReader($"ALTER DATABASE {database_name} SET MULTI_USER\n").Close();
+
+					MessageBox.Show("Phục hồi về thời điểm " + at, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+				catch (Exception)
+				{
+					MessageBox.Show("Thời điểm chọn phục hồi không khả thi\nHoặc quá trình phục hồi đang diễn ra...", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
 			}
 			else
 			{
 				//phuc hoi ve ban backup trong device
-				if (toolStripTextBoxSTT.Text == "0")
-				{
-					MessageBox.Show("Không có bất kỳ bản sao lưu được chọn để phục hồi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-					return;
-				}
 				string restore =
 					$"ALTER DATABASE {database_name} SET SINGLE_USER WITH ROLLBACK IMMEDIATE\n" +
 					"USE tempdb\n" +
 					$"RESTORE DATABASE {database_name} FROM {logical_device_name}  WITH FILE={toolStripTextBoxSTT.Text}, REPLACE\n" +
 					$"ALTER DATABASE {database_name} SET MULTI_USER";
-				Program.ExecSqlDataReader(restore).Close();
-				MessageBox.Show("Phục hồi về bản backup thứ " + toolStripTextBoxSTT.Text, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				try
+				{
+					Program.ExecSqlDataReader(restore).Close();
+					MessageBox.Show("Phục hồi về bản backup thứ " + toolStripTextBoxSTT.Text, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+				catch (Exception)
+				{ }
 			}
+		}
+
+		private void dataGridViewBackup_CellStateChanged(object sender, DataGridViewCellStateChangedEventArgs e)
+		{
+			try
+			{
+				string postion = dataGridViewBackup.Rows[e.Cell.RowIndex].Cells[0].FormattedValue.ToString();
+				toolStripTextBoxSTT.Text = postion;
+			}
+			catch (Exception)
+			{ }
 		}
 	}
 }
