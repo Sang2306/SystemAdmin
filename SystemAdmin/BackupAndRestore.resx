@@ -284,11 +284,9 @@
   <metadata name="sPSTTBACKUPBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>668, 18</value>
   </metadata>
-  <data name="richTextBox1.Text" xml:space="preserve">
-    <value>Hướng dẫn: Ngày giờ ta nhập vào là thời diểm ta muốn phục
-hồi cơ sở dữ liệu về đó. Thời điểm này phải sau thời điểm của bản sao lưu
-mà ta đã chọn trên lưới, và trước thời điểm hiện tại ít nhất là 1 phút.</value>
-  </data>
+  <metadata name="sPSTTBACKUPBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>668, 18</value>
+  </metadata>
   <metadata name="databasesTableAdapter.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>384, 18</value>
   </metadata>

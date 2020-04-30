@@ -333,7 +333,9 @@
 			this.richTextBox1.Name = "richTextBox1";
 			this.richTextBox1.Size = new System.Drawing.Size(429, 118);
 			this.richTextBox1.TabIndex = 3;
-			this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
+			this.richTextBox1.Text = "Hướng dẫn:\nNgày giờ ta nhập vào là thời diểm ta muốn phục\nhồi cơ sở dữ liệu về đó" +
+    ".\nThời điểm này phải sau thời điểm của bản sao lưu\ngần nhất 1 phút trước thời đi" +
+    "ểm hiện tại ít nhất là 1 phút.";
 			// 
 			// timeEditRestore
 			// 

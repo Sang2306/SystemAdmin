@@ -15,6 +15,7 @@ namespace SystemAdmin
 	{
 		Image img = null;
 		string database_name;
+		DateTime latestBackupTime;
 		bool timeParameterChecked = false;
 		public BackupAndRestore()
 		{
@@ -237,6 +238,9 @@ namespace SystemAdmin
 			{
 				string postion = dataGridViewBackup.Rows[e.RowIndex].Cells[0].FormattedValue.ToString();
 				toolStripTextBoxSTT.Text = postion;
+				DateTime dateTime = (DateTime)dataGridViewBackup.Rows[e.RowIndex].Cells[2].Value;
+				dateEditRestore.DateTime = dateTime;
+				timeEditRestore.Time = dateTime;
 			}
 			catch (Exception)
 			{ }
@@ -257,15 +261,26 @@ namespace SystemAdmin
 			{
 				DateTime date = dateEditRestore.DateTime;
 				DateTime time = timeEditRestore.Time;
+				DateTime chooseBackupTime = DateTime.Parse($"{date.Year}-{date.Month}-{date.Day} {time.TimeOfDay}");
+				//kiem tra thoi diem chon phuc hoi < thoi diem hien tai 1 phut khong?
+				if (DateTime.Compare(DateTime.Now, chooseBackupTime.AddMinutes(1)) < 0)
+				{
+					MessageBox.Show($"Thời điểm phục hồi phải trước {DateTime.Now} ít nhất 1 phút\nXem hướng dẫn", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					return;
+				}
+				else if (DateTime.Compare(latestBackupTime.AddMinutes(1), chooseBackupTime) > 0)
+				{
+					MessageBox.Show($"Thời điểm phục hồi phải sau bản backup gần nhất vào {latestBackupTime} ít nhất 1 phút\nXem hướng dẫn", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					return;
+				}
 				string at = $"{date.Year}-{date.Month}-{date.Day} {time.TimeOfDay}";
-				
 				try
 				{
 					Program.ExecSqlDataReader($"ALTER DATABASE {database_name} SET SINGLE_USER WITH ROLLBACK IMMEDIATE\n").Close();
 
 					Program.ExecSqlDataReader($"BACKUP LOG {database_name} TO {logical_device_name}_LOG WITH NORECOVERY, INIT\n").Close();
 
-					Program.ExecSqlDataReader($"RESTORE DATABASE {database_name} FROM {logical_device_name}  WITH NORECOVERY").Close();
+					Program.ExecSqlDataReader($"RESTORE DATABASE {database_name} FROM {logical_device_name} WITH NORECOVERY").Close();
 
 					Program.ExecSqlDataReader($"RESTORE DATABASE {database_name} FROM {logical_device_name}_LOG WITH STOPAT='{at}'\n").Close();
 
@@ -298,10 +313,15 @@ namespace SystemAdmin
 
 		private void dataGridViewBackup_CellStateChanged(object sender, DataGridViewCellStateChangedEventArgs e)
 		{
+			//Khi load danh sach cac ban backup cua database thi ngay/thang backup da dc sap xep theo thu tu giam dan
+			//va cell dang dung tai row tren cung
 			try
 			{
 				string postion = dataGridViewBackup.Rows[e.Cell.RowIndex].Cells[0].FormattedValue.ToString();
 				toolStripTextBoxSTT.Text = postion;
+				latestBackupTime = (DateTime)dataGridViewBackup.Rows[e.Cell.RowIndex].Cells[2].Value;
+				dateEditRestore.DateTime = latestBackupTime;
+				timeEditRestore.Time = latestBackupTime;
 			}
 			catch (Exception)
 			{ }
