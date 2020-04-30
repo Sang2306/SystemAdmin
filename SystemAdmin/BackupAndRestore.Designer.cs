@@ -124,7 +124,7 @@
 			this.timeRestoreParamenterOn.Name = "timeRestoreParamenterOn";
 			this.timeRestoreParamenterOn.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.B)));
-			this.timeRestoreParamenterOn.Size = new System.Drawing.Size(180, 38);
+			this.timeRestoreParamenterOn.Size = new System.Drawing.Size(164, 22);
 			this.timeRestoreParamenterOn.Text = "Bật";
 			this.timeRestoreParamenterOn.Click += new System.EventHandler(this.timeRestoreParamenterOn_Click);
 			// 
@@ -134,7 +134,7 @@
 			this.timeRestoreParamenterOff.Name = "timeRestoreParamenterOff";
 			this.timeRestoreParamenterOff.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.T)));
-			this.timeRestoreParamenterOff.Size = new System.Drawing.Size(180, 38);
+			this.timeRestoreParamenterOff.Size = new System.Drawing.Size(164, 22);
 			this.timeRestoreParamenterOff.Text = "Tắt";
 			this.timeRestoreParamenterOff.Click += new System.EventHandler(this.timeRestoreParamenterOff_Click);
 			// 
@@ -235,7 +235,7 @@
 			this.toolStripTextBoxSTT.Enabled = false;
 			this.toolStripTextBoxSTT.Name = "toolStripTextBoxSTT";
 			this.toolStripTextBoxSTT.Size = new System.Drawing.Size(50, 25);
-			this.toolStripTextBoxSTT.Text = "0";
+			this.toolStripTextBoxSTT.Text = "--";
 			// 
 			// dataGridViewBackup
 			// 
@@ -257,6 +257,7 @@
 			this.dataGridViewBackup.Size = new System.Drawing.Size(744, 231);
 			this.dataGridViewBackup.TabIndex = 3;
 			this.dataGridViewBackup.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewBackup_CellClick);
+			this.dataGridViewBackup.CellStateChanged += new System.Windows.Forms.DataGridViewCellStateChangedEventHandler(this.dataGridViewBackup_CellStateChanged);
 			// 
 			// positionDataGridViewTextBoxColumn
 			// 
@@ -327,11 +328,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.richTextBox1.BackColor = System.Drawing.Color.White;
 			this.richTextBox1.Enabled = false;
+			this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.richTextBox1.Location = new System.Drawing.Point(181, 71);
 			this.richTextBox1.Name = "richTextBox1";
 			this.richTextBox1.Size = new System.Drawing.Size(429, 118);
 			this.richTextBox1.TabIndex = 3;
-			this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
+			this.richTextBox1.Text = "Hướng dẫn:\nNgày giờ ta nhập vào là thời diểm ta muốn phục\nhồi cơ sở dữ liệu về đó" +
+    ".\nThời điểm này phải sau thời điểm của bản sao lưu\ngần nhất 1 phút trước thời đi" +
+    "ểm hiện tại ít nhất là 1 phút.";
 			// 
 			// timeEditRestore
 			// 
