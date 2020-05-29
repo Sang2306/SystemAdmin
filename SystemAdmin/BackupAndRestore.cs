@@ -15,7 +15,8 @@ namespace SystemAdmin
 	{
 		Image img = null;
 		string database_name;
-		DateTime latestBackupTime;
+		DateTime latestBackupRecordDate;
+		DateTime selectedBackupRecordDate; //Khi click vao 1 ban backup se luu lai ngay gio cua ban backup(su dung trong truong hop xoa ban backup)
 		bool timeParameterChecked = false;
 		public BackupAndRestore()
 		{
@@ -116,7 +117,7 @@ namespace SystemAdmin
 
 
 
-			//tao device de backup log
+			//tao device de backup log trong truong hop nguoi dung backup co tham so thoi gian
 			logicalname = database_name.Trim() + "_DEVICE" + "_LOG";
 			physicalname = Program.backup_device_path + logicalname + ".bak";
 			SqlCommand sql_command_2 = new SqlCommand("sp_addumpdevice", Program.connect);
@@ -177,7 +178,7 @@ namespace SystemAdmin
 			{
 				//khi nguoi dung chon thi xoa toan bo cac ban backup va backup phien ban moi
 				command += " WITH INIT;";
-				//truong hop da co 1/nhieu ban backup dc phuc hoi
+				//truong hop da co 1/nhieu ban backup đã dc phuc hoi
 				string first = "declare restore_history_id_set cursor for\n" +
 				$"select restore_history_id from msdb.dbo.restorehistory where destination_database_name='{database_name.Trim()}';\n" +
 				"declare @restore_history_id int\n" +
@@ -223,6 +224,7 @@ namespace SystemAdmin
 			{
 				command += ";";
 			}
+
 			try
 			{
 				Program.ExecSqlDataReader(command).Close();
@@ -241,6 +243,9 @@ namespace SystemAdmin
 				DateTime dateTime = (DateTime)dataGridViewBackup.Rows[e.RowIndex].Cells[2].Value;
 				dateEditRestore.DateTime = dateTime;
 				timeEditRestore.Time = dateTime;
+
+				//de lat nua xoa dua vao ngay gio cua ban backup
+				selectedBackupRecordDate = dateTime;
 			}
 			catch (Exception)
 			{ }
@@ -261,16 +266,16 @@ namespace SystemAdmin
 			{
 				DateTime date = dateEditRestore.DateTime;
 				DateTime time = timeEditRestore.Time;
-				DateTime chooseBackupTime = DateTime.Parse($"{date.Year}-{date.Month}-{date.Day} {time.TimeOfDay}");
+				DateTime chooseRestoreTime = DateTime.Parse($"{date.Year}-{date.Month}-{date.Day} {time.TimeOfDay}");
 				//kiem tra thoi diem chon phuc hoi < thoi diem hien tai 1 phut khong?
-				if (DateTime.Compare(DateTime.Now, chooseBackupTime.AddMinutes(1)) < 0)
+				if (DateTime.Compare(DateTime.Now, chooseRestoreTime.AddMinutes(1)) < 0)
 				{
 					MessageBox.Show($"Thời điểm phục hồi phải trước {DateTime.Now} ít nhất 1 phút\nXem hướng dẫn", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					return;
 				}
-				else if (DateTime.Compare(latestBackupTime.AddMinutes(1), chooseBackupTime) > 0)
+				else if (DateTime.Compare(latestBackupRecordDate.AddMinutes(1), chooseRestoreTime) > 0)
 				{
-					MessageBox.Show($"Thời điểm phục hồi phải sau bản backup gần nhất vào {latestBackupTime} ít nhất 1 phút\nXem hướng dẫn", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show($"Thời điểm phục hồi phải sau bản backup gần nhất vào {latestBackupRecordDate} ít nhất 1 phút\nXem hướng dẫn", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					return;
 				}
 				string at = $"{date.Year}-{date.Month}-{date.Day} {time.TimeOfDay}";
@@ -319,12 +324,55 @@ namespace SystemAdmin
 			{
 				string postion = dataGridViewBackup.Rows[e.Cell.RowIndex].Cells[0].FormattedValue.ToString();
 				toolStripTextBoxSTT.Text = postion;
-				latestBackupTime = (DateTime)dataGridViewBackup.Rows[e.Cell.RowIndex].Cells[2].Value;
-				dateEditRestore.DateTime = latestBackupTime;
-				timeEditRestore.Time = latestBackupTime;
+				latestBackupRecordDate = (DateTime)dataGridViewBackup.Rows[e.Cell.RowIndex].Cells[2].Value;
+				dateEditRestore.DateTime = latestBackupRecordDate;
+				timeEditRestore.Time = latestBackupRecordDate;
+
+				//de lat nua xoa dua vao ngay gio cua ban backup
+				selectedBackupRecordDate = latestBackupRecordDate;
 			}
 			catch (Exception)
 			{ }
+		}
+
+		private void dataGridViewBackup_MouseClick(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				contextMenuStrip.Show(Cursor.Position);
+			}
+		}
+
+		private void toolStripMenuItemDelete_Click(object sender, EventArgs e)
+		{
+			DialogResult res = MessageBox.Show($"Bạn có đồng ý xóa bản backup {selectedBackupRecordDate.ToString("yyyy-MM-dd HH:mm:ss.fff")} không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+			if (res == DialogResult.Yes)
+			{
+				//Xóa bản backup trong database
+				string delete = "declare @backup_set_id int;" +
+							$"select @backup_set_id=backup_set_id from msdb.dbo.backupset bks where bks.database_name='{database_name}' and bks.backup_start_date='{selectedBackupRecordDate.ToString("yyyy-MM-dd HH:mm:ss.fff")}';" +
+							"declare @restore_history_id int;" +
+							"select @restore_history_id=restore_history_id from msdb.dbo.restorehistory where backup_set_id=@backup_set_id;" +
+							"delete from msdb.dbo.restorefilegroup where restore_history_id=@restore_history_id;" +
+							"delete from msdb.dbo.restorefile where restore_history_id=@restore_history_id;" +
+							"delete from msdb.dbo.restorehistory where backup_set_id=@backup_set_id;" +
+							"delete from msdb.dbo.backupfilegroup where backup_set_id=@backup_set_id;" +
+							"delete from msdb.dbo.backupfile where backup_set_id=@backup_set_id;" +
+							"delete from msdb.dbo.Backupset where backup_set_id=@backup_set_id;";
+				SqlCommand sql = new SqlCommand();
+				sql.CommandType = CommandType.Text;
+				sql.CommandText = delete;
+				if (Program.connect.State == ConnectionState.Closed) Program.connect.Open();
+				sql.Connection = Program.connect;
+				sql.ExecuteNonQuery();
+				//todo xoá xong tạo backup mới không được
+
+
+				//Fill lại dữ liệu
+				sP_STT_BACKUPTableAdapter.Fill(dS.SP_STT_BACKUP, database_name);
+
+				MessageBox.Show("Đã xóa thành công! " + selectedBackupRecordDate);
+			}
 		}
 	}
 }

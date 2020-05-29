@@ -62,6 +62,8 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.databasesTableAdapter = new SystemAdmin.DSTableAdapters.databasesTableAdapter();
 			this.sP_STT_BACKUPTableAdapter = new SystemAdmin.DSTableAdapters.SP_STT_BACKUPTableAdapter();
+			this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.toolStripMenuItemDelete = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStrip.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridViewDatabases)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.databasesBindingSource)).BeginInit();
@@ -73,6 +75,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.timeEditRestore.Properties)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dateEditRestore.Properties.CalendarTimeProperties)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dateEditRestore.Properties)).BeginInit();
+			this.contextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// toolStrip
@@ -258,6 +261,7 @@
 			this.dataGridViewBackup.TabIndex = 3;
 			this.dataGridViewBackup.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewBackup_CellClick);
 			this.dataGridViewBackup.CellStateChanged += new System.Windows.Forms.DataGridViewCellStateChangedEventHandler(this.dataGridViewBackup_CellStateChanged);
+			this.dataGridViewBackup.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataGridViewBackup_MouseClick);
 			// 
 			// positionDataGridViewTextBoxColumn
 			// 
@@ -381,6 +385,21 @@
 			// 
 			this.sP_STT_BACKUPTableAdapter.ClearBeforeFill = true;
 			// 
+			// contextMenuStrip
+			// 
+			this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemDelete});
+			this.contextMenuStrip.Name = "contextMenuStrip";
+			this.contextMenuStrip.Size = new System.Drawing.Size(153, 48);
+			// 
+			// toolStripMenuItemDelete
+			// 
+			this.toolStripMenuItemDelete.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemDelete.Image")));
+			this.toolStripMenuItemDelete.Name = "toolStripMenuItemDelete";
+			this.toolStripMenuItemDelete.Size = new System.Drawing.Size(152, 22);
+			this.toolStripMenuItemDelete.Text = "Xóa";
+			this.toolStripMenuItemDelete.Click += new System.EventHandler(this.toolStripMenuItemDelete_Click);
+			// 
 			// BackupAndRestore
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -412,6 +431,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.timeEditRestore.Properties)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dateEditRestore.Properties.CalendarTimeProperties)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dateEditRestore.Properties)).EndInit();
+			this.contextMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -451,5 +471,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn1;
 		private System.Windows.Forms.DataGridViewTextBoxColumn backupstartdateDataGridViewTextBoxColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn usernameDataGridViewTextBoxColumn;
+		private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemDelete;
 	}
 }

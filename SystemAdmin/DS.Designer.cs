@@ -1762,17 +1762,8 @@ namespace SystemAdmin.DSTableAdapters {
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = @"SELECT     position, name, backup_start_date , user_name FROM  msdb.dbo.backupset 
-   WHERE     database_name =@DBNAME AND type='D' AND 
-     backup_set_id >= 
-     		( SELECT backup_set_id FROM 	msdb.dbo.backupset
-          		WHERE media_set_id = 
-				( SELECT  MAX(media_set_id) 
-				     FROM msdb.dbo.backupset  
-                           WHERE database_name = @DBNAME AND type='D') 
-                  AND position=1  
-           ) 
-    ORDER BY position DESC";
+            this._commandCollection[0].CommandText = "SELECT     position, name, backup_start_date , user_name FROM  msdb.dbo.backupset" +
+                " \r\n   WHERE     database_name =@DBNAME AND type=\'D\'\r\n    ORDER BY position DESC";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[0].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DBNAME", global::System.Data.SqlDbType.NVarChar, 128, global::System.Data.ParameterDirection.Input, 0, 0, "database_name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }

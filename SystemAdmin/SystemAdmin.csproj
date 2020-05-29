@@ -59,6 +59,9 @@
     <Compile Include="BackupAndRestore.Designer.cs">
       <DependentUpon>BackupAndRestore.cs</DependentUpon>
     </Compile>
+    <Compile Include="DS.cs">
+      <DependentUpon>DS.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DS.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
