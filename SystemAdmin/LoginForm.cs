@@ -27,6 +27,11 @@ namespace SystemAdmin
 			Program.servername = textBoxServerName.Text;
 			Program.serverLogin = textBoxLoginName.Text;
 			Program.password = textBoxPassword.Text;
+			if (Program.servername == "" || Program.serverLogin == "" || Program.password == "")
+			{
+				MessageBox.Show("Không được để trống bất kỳ thông tin nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				return;
+			}
 			int is_ok = Program.KetNoi();
 			if (is_ok != 0)
 			{
