@@ -365,8 +365,6 @@ namespace SystemAdmin
 				if (Program.connect.State == ConnectionState.Closed) Program.connect.Open();
 				sql.Connection = Program.connect;
 				sql.ExecuteNonQuery();
-				//todo xoá xong tạo backup mới không được
-
 
 				//Fill lại dữ liệu
 				sP_STT_BACKUPTableAdapter.Fill(dS.SP_STT_BACKUP, database_name);
